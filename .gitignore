@@ -1,0 +1,7 @@
+# .gitignore
+
+# Editor file
+*.vscode
+
+# Sensitive file
+api_keys.txt
