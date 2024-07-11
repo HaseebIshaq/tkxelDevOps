@@ -16,3 +16,17 @@ resource "aws_instance" "my_ec2_instance" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.my_subnet.id
 }
+
+resource "local_file" "ansible_inventory" {
+  content = <<-EOT
+    [webservers]
+    ${aws_instance.my_ec2_instance.public_ip}
+  EOT
+  filename = "${path.module}/ansible/inventory"
+}
+
+provisioner "ansible" {
+  plays = ["${path.module}/ansible/playbook.yml"]
+  inventory = local_file.ansible_inventory.filename
+  become = true
+}
