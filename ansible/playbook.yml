@@ -1,72 +1,18 @@
-- hosts: localhost
-  connection: local  
-  gather_facts: false
+- name: Configure EC2 Instance
+  hosts: all
+  become: true
   tasks:
-    - name: Save private key
-      copy:
-        content: "{{ lookup('file', 'ansible/my-key-pair.pem') }}"
-        dest: "ansible/.ssh/my-key-pair.pem"
-        mode: '0400'
+    - name: Update apt cache
+      apt:
+        update_cache: yes
 
-    - name: Provision EC2 instance
-      ec2_instance:
-        aws_access_key: "{{ ansible_env.AWS_ACCESS_KEY_ID }}"
-        aws_secret_key: "{{ ansible_env.AWS_SECRET_ACCESS_KEY }}"
-        key_name: my-key-pair
-        instance_type: t2.micro  # Replace with your desired instance type
-        image_id: ami-0b72821e2f351e396 # Replace with your desired AMI ID
-        region: us-east-1  # Replace with your desired AWS region
-        vpc_subnet_id: "subnet-054cb907a936367bf"  # Replace with your subnet ID
-        tags:
-          Name: MyEC2Instance
-      register: ec2_instance
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
 
-    - name: Wait for SSH to become available
-      wait_for:
-        host: "18.206.125.130"
-        port: 22
-        delay: 10
-        timeout: 300
-
-    - name: Configure Docker and Docker Compose
-      become: true
-      ansible_ssh_private_key_file: "ansible/.ssh/my-key-pair.pem"
-      hosts: "18.206.125.130"
-      tasks:
-        - name: Install Docker and Docker Compose
-          apt:
-            name: "{{ packages }}"
-            state: present
-          vars:
-            packages:
-              - apt-transport-https
-              - ca-certificates
-              - curl
-              - gnupg
-              - lsb-release
-
-        - name: Install Docker's official GPG key
-          apt_key:
-            url: https://download.docker.com/linux/ubuntu/gpg
-            state: present
-
-        - name: Add Docker APT repository
-          apt_repository:
-            repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
-            state: present
-
-        - name: Install Docker
-          apt:
-            name: docker-ce
-            state: present
-
-        - name: Install Docker Compose
-          apt:
-            name: docker-compose
-            state: present
-
-        - name: Start Docker service
-          service:
-            name: docker
-            state: started
-            enabled: yes
+    - name: Start nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
