@@ -18,14 +18,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       
+    - name: Install Ansible
+      run: sudo apt-get install -y ansible  # Install Ansible on the GitHub Actions runner
+
+    - name: Install community.aws collection
+      run: ansible-galaxy collection install community.aws
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.3.0  # Specify the desired Terraform version
         
-    - name: Setup Ansible
-      run: sudo apt-get install -y ansible  # Install Ansible on the GitHub Actions runner
-
     - name: Run Ansible Playbook to provision EC2 instance
       run: |
-        ansible-playbook ansible/playbook.yml
+        ansible-playbook ansible/playbook.yml  # Adjust path to your Ansible playbook
