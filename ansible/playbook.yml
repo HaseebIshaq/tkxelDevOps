@@ -1,5 +1,4 @@
-- hosts: localhost
-  connection: local
+- hosts: all
   gather_facts: false
   tasks:
     - name: Create SSH key pair
