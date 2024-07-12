@@ -2,17 +2,10 @@
   connection: local  
   gather_facts: false
   tasks:
-    - name: Create SSH key pair
-      community.aws.ec2_key:
-        name: my-key-pair
-        region: us-east-1  # Replace with your desired AWS region
-        state: present
-      register: key_pair
-
     - name: Save private key
       copy:
-        content: "{{ key_pair.key.private_key }}"
-        dest: "ansible/my-key-pair.pem"
+        content: "{{ lookup('file', 'ansible/my-key-pair.pem') }}"
+        dest: "ansible/.ssh/my-key-pair.pem"
         mode: '0400'
 
     - name: Provision EC2 instance
@@ -23,7 +16,7 @@
         instance_type: t2.micro  # Replace with your desired instance type
         image_id: ami-0b72821e2f351e396 # Replace with your desired AMI ID
         region: us-east-1  # Replace with your desired AWS region
-        vpc_subnet_id: "subnet-054cb907a936367bf"
+        vpc_subnet_id: "subnet-054cb907a936367bf"  # Replace with your subnet ID
         tags:
           Name: MyEC2Instance
       register: ec2_instance
@@ -37,7 +30,7 @@
 
     - name: Configure Docker and Docker Compose
       become: true
-      ansible_ssh_private_key_file: "ansible/my-key-pair.pem"
+      ansible_ssh_private_key_file: "ansible/.ssh/my-key-pair.pem"
       hosts: "18.206.125.130"
       tasks:
         - name: Install Docker and Docker Compose
