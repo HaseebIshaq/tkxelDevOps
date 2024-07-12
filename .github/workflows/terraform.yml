@@ -34,7 +34,7 @@ jobs:
         terraform apply -auto-approve
       
     - name: Setup Ansible
-      run: sudo apt-get install -y ansible  
+      run: sudo yum install -y ansible  
 
     - name: Run Ansible Playbook
       run: |
