@@ -38,6 +38,6 @@ jobs:
 
     - name: Run Ansible Playbook
       run: |
-        ansible-playbook -i '${{ steps.build.outputs.public_ip }},' ansible/playbook.yml
+        ansible-playbook -i ../ansible/my-key-pair.pem ec2-user@ ansible/playbook.yml
       env:
         ANSIBLE_HOST_KEY_CHECKING: False
