@@ -1,7 +1,6 @@
 - hosts: localhost
   connection: local
   gather_facts: false
-
   tasks:
     - name: Create SSH key pair
       community.aws.ec2_key:
