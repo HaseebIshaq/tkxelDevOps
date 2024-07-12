@@ -17,7 +17,7 @@ resource "aws_instance" "my_ec2_instance" {
   subnet_id     = aws_subnet.my_subnet.id
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${self.public_ip},' ../ansible/configure_ec2.yml"
+    command = "ansible-playbook -i '${self.public_ip},' ../ansible/playbook.yml"
     environment = {
       ANSIBLE_HOST_KEY_CHECKING = "False"  # Disable host key checking for simplicity (not recommended for production)
     }
