@@ -35,8 +35,19 @@ jobs:
       run: | 
         cd terraform
         terraform apply -auto-approve
+        
+    - name: Setup Ansible
+      run: sudo apt-get install -y ansible  # Install Ansible on the GitHub Actions runner
+
+    - name: Run Ansible Playbook
+      run: |
+        ansible-playbook -i '${{ steps.build.outputs.public_ip }},' ansible/configure_ec2.yml
       
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        ANSIBLE_HOST_KEY_CHECKING: False
+
+
+
 
