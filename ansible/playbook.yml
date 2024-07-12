@@ -23,22 +23,22 @@
         instance_type: t2.micro  # Replace with your desired instance type
         image_id: ami-0b72821e2f351e396 # Replace with your desired AMI ID
         region: us-east-1  # Replace with your desired AWS region
-        vpc_subnet_id: "{{ subnet-054cb907a936367bf }}"
+        vpc_subnet_id: "subnet-054cb907a936367bf"
         tags:
           Name: MyEC2Instance
       register: ec2_instance
 
     - name: Wait for SSH to become available
       wait_for:
-        host: "{{ 18.206.125.130 }}"
+        host: "18.206.125.130"
         port: 22
         delay: 10
         timeout: 300
 
     - name: Configure Docker and Docker Compose
       become: true
-      ansible_ssh_private_key_file: "{{ playbook_dir }}/my-key-pair.pem"
-      hosts: "{{ 18.206.125.130 }}"
+      ansible_ssh_private_key_file: "ansible/my-key-pair.pem"
+      hosts: "18.206.125.130"
       tasks:
         - name: Install Docker and Docker Compose
           apt:
