@@ -3,9 +3,9 @@ provider "aws" {
 }
 
 resource "aws_instance" "my_ec2_instance" {
-  ami           = "ami-0cff7528ff583bf9a"  # Replace with your desired AMI ID
+  ami           = "ami-0b72821e2f351e396"  # Replace with your desired AMI ID
   instance_type = "t2.micro"  # Replace with your desired instance type
-  subnet_id     = aws_subnet.my_subnet.id  # Replace with your subnet ID
+  subnet_id     = subnet-054cb907a936367bf # Replace with your subnet ID
 
   key_name      = "my-key-pair"  # This will be created by Ansible
 
