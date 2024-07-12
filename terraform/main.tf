@@ -14,7 +14,7 @@ resource "aws_subnet" "my_subnet" {
 resource "aws_instance" "my_ec2_instance" {
   ami           = "ami-0b72821e2f351e396"  # Replace with your desired AMI ID
   instance_type = "t2.micro"
-  subnet_id     = subnet-054cb907a936367bf
+  subnet_id     = "subnet-054cb907a936367bf"
 
   provisioner "local-exec" {
     command = "ansible-playbook -i '18.206.125.130' ../ansible/playbook.yml"
