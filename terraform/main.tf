@@ -14,7 +14,7 @@ resource "aws_instance" "my_ec2_instance" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${self.public_ip},' ../ansible/configure_ec2.yml"
+    command = "ansible-playbook -i '${self.public_ip},' ../ansible/playbook.yml"
     environment = {
       ANSIBLE_HOST_KEY_CHECKING = "False"
     }
