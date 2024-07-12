@@ -12,7 +12,7 @@
     - name: Save private key
       copy:
         content: "{{ key_pair.key.private_key }}"
-        dest: "{{ playbook_dir }}/my-key-pair.pem"
+        dest: "ansible/my-key-pair.pem"
         mode: '0400'
 
     - name: Provision EC2 instance
@@ -21,16 +21,16 @@
         aws_secret_key: "{{ ansible_env.AWS_SECRET_ACCESS_KEY }}"
         key_name: my-key-pair
         instance_type: t2.micro  # Replace with your desired instance type
-        image_id: ami-0cff7528ff583bf9a  # Replace with your desired AMI ID
+        image_id: ami-0b72821e2f351e396 # Replace with your desired AMI ID
         region: us-east-1  # Replace with your desired AWS region
-        vpc_subnet_id: "{{ vpc_subnet_id }}"
+        vpc_subnet_id: "{{ subnet-054cb907a936367bf }}"
         tags:
           Name: MyEC2Instance
       register: ec2_instance
 
     - name: Wait for SSH to become available
       wait_for:
-        host: "{{ ec2_instance.instances[0].public_ip }}"
+        host: "{{ 18.206.125.130 }}"
         port: 22
         delay: 10
         timeout: 300
@@ -38,7 +38,7 @@
     - name: Configure Docker and Docker Compose
       become: true
       ansible_ssh_private_key_file: "{{ playbook_dir }}/my-key-pair.pem"
-      hosts: "{{ ec2_instance.instances[0].public_ip }}"
+      hosts: "{{ 18.206.125.130 }}"
       tasks:
         - name: Install Docker and Docker Compose
           apt:
