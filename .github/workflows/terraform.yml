@@ -31,4 +31,4 @@ jobs:
         
     - name: Run Ansible Playbook to provision EC2 instance
       run: |
-        ansible-playbook ansible/playbook.yml  # Adjust path to your Ansible playbook
+        ansible-playbook ansible/playbook.yml
