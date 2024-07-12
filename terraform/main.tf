@@ -12,8 +12,14 @@ resource "aws_subnet" "my_subnet" {
 }
 
 resource "aws_instance" "my_ec2_instance" {
-  ami           = "ami-0cff7528ff583bf9a"
+  ami           = "ami-0cff7528ff583bf9a"  # Replace with your desired AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.my_subnet.id
-}
 
+  provisioner "local-exec" {
+    command = "ansible-playbook -i '${self.public_ip},' ../ansible/configure_ec2.yml"
+    environment = {
+      ANSIBLE_HOST_KEY_CHECKING = "False"  # Disable host key checking for simplicity (not recommended for production)
+    }
+  }
+}
