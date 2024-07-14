@@ -38,6 +38,6 @@ jobs:
 
     - name: Run Ansible Playbook
       run: |
-        ansible-playbook -i ../ansible/my-key-pair.pem ec2-user@ ansible/playbook.yml
+        ansible-playbook -i ../ansible/my-key-pair.pem ec2-user@18.206.125.130 ansible/playbook.yml
       env:
         ANSIBLE_HOST_KEY_CHECKING: False
